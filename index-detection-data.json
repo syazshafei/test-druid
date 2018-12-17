@@ -1,0 +1,83 @@
+{
+  "type": "index",
+  "spec": {
+    "ioConfig": {
+      "type": "index",
+      "firehose": {
+        "type": "local",
+        "baseDir": "data/",
+        "filter": "detection-data.csv"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "wan_test",
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "hour",
+        "queryGranularity": "none",
+        "intervals": [
+          "2015-02-02/2015-02-04"
+        ]
+      },
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "csv",
+          "timestampSpec": {
+            "column": "date"
+          },
+          "columns": [
+            "date",
+            "Temperature",
+            "Humidity","Light",
+            "CO2","HumidityRatio",
+            "Occupancy"
+          ],
+          "dimensionsSpec": {
+            "dimensions": [
+              "date",
+              {
+                "name": "Temperature",
+                "type": "float"
+              },
+              {
+                "name": "Humidity",
+                "type": "float"
+              },
+              {
+                "name": "Light",
+                "type": "float"
+              },
+              {
+                "name": "CO2",
+                "type": "float"
+              },
+              {
+                "name": "HumidityRatio",
+                "type": "float"
+              },
+              {
+                "name": "Occupancy",
+                "type": "long"
+              }
+            ]
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        }
+      ]
+    },
+    "tuningConfig": {
+      "type": "index",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "jobProperties": {}
+    }
+  }
+}
